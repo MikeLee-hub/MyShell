@@ -1,0 +1,18 @@
+[system programming]
+Simple Linux shell programming
+
+csapp.{c,h}
+        CS:APP3e functions
+
+shellex.c
+        Simple shell
+
+
+compile
+	$ make
+	
+run
+	$ ./shellex
+	
+remove execute file
+	$ make clean
