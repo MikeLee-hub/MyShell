@@ -20,6 +20,7 @@ struct JOB{			// background job list sturcture
 int pid_n;					// number of background job
 pid_t for_pid;				// foreground process id
 char fp_command[MAXLINE];	// foreground process command
+char pipe_string[3] = "|\0";	// string for parsing pipe
 
 /* Function prototypes */
 void eval(char *cmdline);
@@ -252,12 +253,22 @@ int parseline(char *buf, char **argv)
 
     /* Build the argv list */
     argc = 0;
-    while ((delim = strchr(buf, ' '))) {
-		argv[argc++] = buf;
-		*delim = '\0';
-		buf = delim + 1;
-		while (*buf && (*buf == ' ')) /* Ignore spaces */
-            buf++;
+    while ((delim = strpbrk(buf, " |"))) {
+	   if (*buf == '\'' || *buf == '\"'){
+	      buf = buf + 1;
+	      delim = strpbrk(buf, "\'\"');
+	   }
+	   else if(*delim == '|'){
+	      if(*buf != '|'){
+		 argv[argc++] = buf;
+	      }
+	      buf = pipe_string;   
+	   }
+	   argv[argc++] = buf;
+	   *delim = '\0';
+	   buf = delim + 1;
+	   while (*buf && (*buf == ' ')) /* Ignore spaces */
+	      buf++;
     }
 
     argv[argc] = NULL;
