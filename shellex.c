@@ -256,7 +256,7 @@ int parseline(char *buf, char **argv)
     while ((delim = strpbrk(buf, " |"))) {
 	   if (*buf == '\'' || *buf == '\"'){
 	      buf = buf + 1;
-	      delim = strpbrk(buf, "\'\"');
+	      delim = strpbrk(buf, "\'\"");
 	   }
 	   else if(*delim == '|'){
 	      if(*buf != '|'){
